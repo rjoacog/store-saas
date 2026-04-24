@@ -1,0 +1,80 @@
+.store-select {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: #f1f5f9;
+  box-sizing: border-box;
+}
+
+.store-select__card {
+  width: 100%;
+  max-width: 24rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+}
+
+.store-select__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+}
+
+.store-select__lead {
+  margin: 0 0 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #64748b;
+  text-align: center;
+}
+
+.store-select__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 1rem;
+}
+
+.store-select__field select {
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  color: #0f172a;
+  background: #fff;
+  cursor: pointer;
+}
+
+.store-select__error {
+  font-size: 0.85rem;
+  color: #b91c1c;
+  text-align: center;
+  margin: 0 0 0.75rem;
+}
+
+.store-select__submit {
+  width: 100%;
+  min-height: 2.5rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: #0d9488;
+  border: 1px solid #0f766e;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.store-select__submit:hover {
+  background: #0f766e;
+}

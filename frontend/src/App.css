@@ -1,0 +1,166 @@
+.app {
+  text-align: left;
+}
+
+.app--centered {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.app-loading {
+  margin: 0;
+  font-size: 1rem;
+  color: #64748b;
+}
+
+.app-header {
+  margin-bottom: 0.75rem;
+}
+
+.app-header--authed {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.app-header__brand h1,
+.app-header h1 {
+  font-size: 1.15rem;
+  margin: 0 0 0.2rem;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.app-header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.app-header__nav-btn {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.4rem;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+  transition:
+    color 0.12s ease,
+    background 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.app-header__nav-btn:hover {
+  color: #0f172a;
+  background: #e2e8f0;
+}
+
+.app-header__nav-btn--active {
+  color: #0f766e;
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+}
+
+.app-header__user {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+.app-header__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.app-header__email {
+  color: #64748b;
+  max-width: 16rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+.app-header__storename {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #0f766e;
+  max-width: 16rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-header__store select {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.4rem;
+  color: #0f172a;
+  background: #fff;
+  cursor: pointer;
+}
+
+.app-header__logout {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+}
+
+.app-header__logout:hover {
+  background: #e2e8f0;
+}
+
+.app-subtitle {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.app-main {
+  max-width: 100%;
+}
+
+.app-pos-focus {
+  margin-top: 0.5rem;
+}

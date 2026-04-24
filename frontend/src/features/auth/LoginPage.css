@@ -1,0 +1,133 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background: linear-gradient(165deg, #ecfdf5 0%, #f8fafc 45%, #e0f2fe 100%);
+}
+
+.login-page__card {
+  width: 100%;
+  max-width: 24rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.75rem 1.5rem 1.5rem;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+}
+
+.login-page__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  text-align: center;
+}
+
+.login-page__lead {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.login-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.login-page__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.login-page__field input {
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  color: #0f172a;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.login-page__field input:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+.login-page__field input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.login-page__error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #b91c1c;
+  text-align: center;
+}
+
+.login-page__submit {
+  margin-top: 0.25rem;
+  width: 100%;
+  min-height: 2.75rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+  border: 2px solid #15803d;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.35);
+  transition: filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-page__submit:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.45);
+}
+
+.login-page__submit:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.login-page__switch {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.login-page__link {
+  font: inherit;
+  font-weight: 600;
+  color: #0d9488;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.login-page__link:hover:not(:disabled) {
+  color: #0f766e;
+}
+
+.login-page__link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
