@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient, Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
@@ -8,8 +7,7 @@ if (connectionString == null || connectionString === '') {
   throw new Error('DATABASE_URL is required to run the seed');
 }
 
-const adapter = new PrismaPg({ connectionString });
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 const ITEMS: { name: string; price: number; stock: number }[] = [
   { name: 'Coca Cola 500ml', price: 2500, stock: 20 },

@@ -31,8 +31,7 @@ export class AuthService {
     const passwordHash = await bcrypt.hash(dto.password, 10);
     let user: { id: number; email: string };
     try {
-      // Un solo create anidado evita $transaction(interactive), que con @prisma/adapter-pg
-      // en PaaS suele disparar P2028 (timeout al iniciar la transacción en el motor).
+      // Un solo create anidado: menos round-trips y sin transacción interactiva.
       const created = await this.prisma.user.create({
         data: {
           email,
