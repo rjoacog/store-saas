@@ -5,7 +5,7 @@ import { Pool } from 'pg';
 
 /**
  * Prisma 7 exige `new PrismaClient({ adapter })` (no admite `new PrismaClient()` vacío).
- * Pool + SSL en producción suelen evitar timeouts con Postgres en Railway.
+ * SSL condicional: interno Railway sin TLS; proxy público / sslmode=require con TLS.
  */
 @Injectable()
 export class PrismaService
@@ -23,13 +23,33 @@ export class PrismaService
       );
     }
 
-    const isProd = process.env.NODE_ENV === 'production';
+    // `postgres.railway.internal` suele ir sin TLS; forzar `ssl` puede romperla.
+    // Hosts públicos (proxy.rlwy.net) o `sslmode=require` en el string sí usan SSL.
+    const host = (() => {
+      try {
+        return new URL(
+          url.replace(/^postgresql:\/\//i, 'https://'),
+        ).hostname;
+      } catch {
+        return '';
+      }
+    })();
+    const isInternalRailway = host.includes('railway.internal');
+    const isPublicProxy =
+      host.includes('proxy.rlwy.net') || host.includes('shuttle');
+    const urlWantsSsl = /sslmode=require|ssl=true/i.test(url);
+    const useSsl: false | { rejectUnauthorized: false } = isInternalRailway
+      ? false
+      : isPublicProxy || urlWantsSsl
+        ? { rejectUnauthorized: false }
+        : false;
+
     const pool = new Pool({
       connectionString: url,
       max: 10,
       connectionTimeoutMillis: 30_000,
       idleTimeoutMillis: 30_000,
-      ssl: isProd ? { rejectUnauthorized: false } : undefined,
+      ssl: useSsl,
     });
     const adapter = new PrismaPg(pool);
 
