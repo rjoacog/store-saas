@@ -26,25 +26,28 @@ export class AuthService {
     const passwordHash = await bcrypt.hash(dto.password, 10);
     let user: { id: number; email: string };
     try {
-      user = await this.prisma.$transaction(async (tx) => {
-        const createdUser = await tx.user.create({
-          data: { email, passwordHash },
-        });
-        const store = await tx.store.create({
-          data: {
-            name: storeName,
-            ownerId: createdUser.id,
-          },
-        });
-        await tx.membership.create({
-          data: {
-            userId: createdUser.id,
-            storeId: store.id,
-            role: 'ADMIN',
-          },
-        });
-        return createdUser;
-      });
+      user = await this.prisma.$transaction(
+        async (tx) => {
+          const createdUser = await tx.user.create({
+            data: { email, passwordHash },
+          });
+          const store = await tx.store.create({
+            data: {
+              name: storeName,
+              ownerId: createdUser.id,
+            },
+          });
+          await tx.membership.create({
+            data: {
+              userId: createdUser.id,
+              storeId: store.id,
+              role: 'ADMIN',
+            },
+          });
+          return createdUser;
+        },
+        { maxWait: 15_000, timeout: 15_000 },
+      );
     } catch (e) {
       if (
         e instanceof Prisma.PrismaClientKnownRequestError &&
