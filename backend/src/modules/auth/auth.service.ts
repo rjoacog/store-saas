@@ -1,6 +1,9 @@
 import {
   ConflictException,
   Injectable,
+  InternalServerErrorException,
+  Logger,
+  ServiceUnavailableException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -12,6 +15,8 @@ import { RegisterDto } from './dto/register.dto.js';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
@@ -26,36 +31,56 @@ export class AuthService {
     const passwordHash = await bcrypt.hash(dto.password, 10);
     let user: { id: number; email: string };
     try {
-      user = await this.prisma.$transaction(
-        async (tx) => {
-          const createdUser = await tx.user.create({
-            data: { email, passwordHash },
-          });
-          const store = await tx.store.create({
-            data: {
-              name: storeName,
-              ownerId: createdUser.id,
-            },
-          });
-          await tx.membership.create({
-            data: {
-              userId: createdUser.id,
-              storeId: store.id,
+      // Un solo create anidado evita $transaction(interactive), que con @prisma/adapter-pg
+      // en PaaS suele disparar P2028 (timeout al iniciar la transacción en el motor).
+      const created = await this.prisma.user.create({
+        data: {
+          email,
+          passwordHash,
+          memberships: {
+            create: {
               role: 'ADMIN',
+              store: {
+                create: {
+                  name: storeName,
+                  owner: {
+                    connect: { email },
+                  },
+                },
+              },
             },
-          });
-          return createdUser;
+          },
         },
-        { maxWait: 15_000, timeout: 15_000 },
-      );
+        select: { id: true, email: true },
+      });
+      user = created;
     } catch (e) {
-      if (
-        e instanceof Prisma.PrismaClientKnownRequestError &&
-        e.code === 'P2002'
-      ) {
-        throw new ConflictException('Email already in use');
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          throw new ConflictException('Email already in use');
+        }
+        if (e.code === 'P2028') {
+          throw new ServiceUnavailableException(
+            'La base de datos no respondió a tiempo. Reintentá en unos segundos.',
+          );
+        }
+        if (e.code === 'P2021' || e.code === 'P2010') {
+          throw new ServiceUnavailableException(
+            'Faltan tablas en la base de datos. En el servidor ejecutá: npx prisma migrate deploy',
+          );
+        }
+        this.logger.warn(`Prisma error en register: ${e.code} ${e.message}`);
+      } else if (e instanceof Prisma.PrismaClientInitializationError) {
+        this.logger.error(e.message);
+        throw new ServiceUnavailableException(
+          'No se pudo conectar a la base de datos. Revisá DATABASE_URL en el despliegue.',
+        );
+      } else {
+        this.logger.error('Error en register', e);
       }
-      throw e;
+      throw new InternalServerErrorException(
+        'Error al registrar. Revisá los logs del servidor o probá de nuevo.',
+      );
     }
     return {
       accessToken: this.jwtService.sign({
