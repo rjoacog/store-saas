@@ -43,7 +43,7 @@ export class ProductsService {
         e instanceof Prisma.PrismaClientKnownRequestError &&
         e.code === 'P2002'
       ) {
-        throw new ConflictException('Barcode already in use');
+        throw new ConflictException('Barcode already in use for this store');
       }
       throw e;
     }
