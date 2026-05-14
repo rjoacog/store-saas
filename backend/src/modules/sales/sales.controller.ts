@@ -20,9 +20,6 @@ import { SalesService } from './sales.service.js';
 
 @Controller('sales')
 export class SalesController {
-  /** Sustituir por el store resuelto desde auth (guard / decorator). */
-  private static readonly MOCK_STORE_ID = 1;
-
   constructor(private readonly salesService: SalesService) {}
 
   @Get()
@@ -44,8 +41,9 @@ export class SalesController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard, StoreGuard)
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() dto: CreateSaleDto) {
-    return this.salesService.createSale(dto, SalesController.MOCK_STORE_ID);
+  create(@Req() req: StoreScopedRequest, @Body() dto: CreateSaleDto) {
+    return this.salesService.createSale(dto, req.storeId);
   }
 }

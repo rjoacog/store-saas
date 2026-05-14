@@ -1,19 +1,21 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import type { StoreScopedRequest } from '../auth/auth.types.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { StoreGuard } from '../auth/guards/store.guard.js';
 import { ReportsService } from './reports.service.js';
 
 @Controller('reports')
+@UseGuards(JwtAuthGuard, StoreGuard)
 export class ReportsController {
-  private static readonly MOCK_STORE_ID = 1;
-
   constructor(private readonly reportsService: ReportsService) {}
 
   @Get('sales-summary')
-  getSalesSummary() {
-    return this.reportsService.getSalesSummary(ReportsController.MOCK_STORE_ID);
+  getSalesSummary(@Req() req: StoreScopedRequest) {
+    return this.reportsService.getSalesSummary(req.storeId);
   }
 
   @Get('top-products')
-  getTopProductsReport() {
-    return this.reportsService.getTopProducts(ReportsController.MOCK_STORE_ID);
+  getTopProductsReport(@Req() req: StoreScopedRequest) {
+    return this.reportsService.getTopProducts(req.storeId);
   }
 }
