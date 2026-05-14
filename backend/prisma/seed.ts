@@ -52,7 +52,7 @@ async function main() {
     const barcode = `SEED-${String(i + 1).padStart(4, '0')}`;
 
     await prisma.product.upsert({
-      where: { barcode },
+      where: { storeId_barcode: { storeId: store.id, barcode } },
       create: {
         name: item.name,
         price: new Prisma.Decimal(item.price),
